@@ -15,21 +15,21 @@ ul,li{
 .content-wrap{
 	position:relative;
 }
-.content-wrap li{
+.content-wrap .page{
 	width:100%;
 	height:100%;
-	background:#CAE1FF;
+	/*background:#CAE1FF;*/
 	color:red;
 	float:left;
 	overflow:hidden;
 	position:relative;
 }
-li:nth-child(2){
+/*li:nth-child(2){
 	background:#9BCD9B;
 }
 li:nth-child(3){
 	background:yellow;
-}
+}*/
 
 .charector {
 	width: 151px;
@@ -39,7 +39,8 @@ li:nth-child(3){
 	/* 设置一个元素的坐标 */
 	left: 6%;
 	top: 55%;
-	}
+}
+
 .slowWalk{
    -webkit-animation-name:person-slow;
    -webkit-animation-duration: 950ms;
@@ -75,4 +76,79 @@ button {
 .button {
   position: absolute;
   bottom: 0;
+}
+/*人物带花暂停*/
+.boyOriginal{
+   background-position: -151px 0;
+}
+.slowFlolerWalk {
+   -webkit-animation-name: person-floler-slow;
+   -webkit-animation-duration: 950ms;
+   -webkit-animation-iteration-count: infinite;
+   -webkit-animation-timing-function: step-start;
+}
+@-webkit- person-slow{
+	0% {
+		background-position:-0,-291px;
+	}
+	25% {
+		background-position:-601px 0px;
+	}
+	50% {
+      background-position: -302px -291px;
+     }
+    75% {
+      background-position: -151px -291px;
+    }
+    100% {
+      background-position: -0px -291px;
+    }
+}
+ @-webkit-keyframes person-floler-slow {
+       0% {
+           background-position: -453px -0px;
+       }
+       25% {
+           background-position: -904px -0px;
+       }
+       50% {
+           background-position: -451px -0px;
+       }
+       75% {
+           background-position: -753px -0px;
+       }
+       100% {
+           background-position: -300px -0px;
+       }
+}
+.boy-rotate {
+    -webkit-animation-name: boy-rotate;
+    -webkit-animation-duration: 850ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: step-start;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes boy-rotate {
+    0% {
+        background-position: -604px -291px;
+    }
+    16.7% {
+        background-position: -151px -0px;
+    }
+    33.4% {
+        background-position: -453px -291px;
+    }
+    50.1% {
+        background-position: 0 0;
+    }
+    66.8% {
+        background-position: -906px -291px;
+    }
+    83.5% {
+        background-position: -755px -291px;
+    }
+    100% {
+        background-position: -604px -291px;
+    }
 }

@@ -4,7 +4,7 @@ function Swipe(container){
 	var element = container.find(":first");
 	//滑动的对象
 	var swipe ={};
-	var slides = element.find("li");
+	var slides = element.find(".page");
 	var width = container.width();
 	var height = container.height();
 	 element.css({

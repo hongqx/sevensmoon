@@ -24,14 +24,15 @@ function doorAction(left,right,time){
 
     return defer;
 }
-
+//开门
 function openDoor () {
   return doorAction("-50%","100%",2000);
 }
-
+//关门
 function shutDoor () {
   return doorAction("0%","50%",2000);
 }
+var instanceX;
 //灯的动画
 var lamp = {
   elem:$(".b_background"),
@@ -120,7 +121,49 @@ function BoyWalk(){
 		},time);
 		return d1;
 	}
+	//走进商店
+    function walkToShop(runTime){
+       var defer = $.Deferred();
+       var doorObj= $(".door");
+       //获取门的坐标
+       var doorOffset = doorObj.offset();
+       var doorOffsetLeft = doorOffset.left;
+       //获取小孩当前的坐标
+       var boyOffset = $boy.offset();
+       var boyOffsetLeft = boyOffset.left;
+       //计算当前需要移动的坐标
+       instanceX =  (doorOffsetLeft + doorObj.width()/2)-(boyOffsetLeft +$boy.width()/2);
+       var walkPlay = startRun({
+           transform:"translateX("+instanceX+"px),scale(.3,.3)",
+           opacity:0.1
+       },runTime);
+      walkPlay.done(function(){
+      	$boy.css({opacity:0});
+      	defer.resolve();
+      });
+      return defer;
+    }
 
+    //走出商店
+    function walkOutShop(runTime) {
+        var defer = $.Deferred();
+        var walkPlay = startRun({
+        	transform:"translateX("+instanceX+"px),scale(1,1)",
+        	opacity:1
+        },runTime);
+        walkPlay.done(function(){
+        	defer.resolve();
+        });
+        return defer;
+    }
+    //取花  其实是将人物图片换一下
+    function getFlower(){
+    	var defer = $.Deferred();
+    	setTimeout(function(){
+    	//取花
+    	  $boy.addClass("slowFlolerWalk");
+    	});
+    }
 	//计算移动的距离 direction:方向 proportion移动的百分比
 	function calculateDist(direction,proportion){
 		return (direction==="x" ? visualWidth:visualHeight)*proportion;
@@ -139,6 +182,38 @@ function BoyWalk(){
 		//改变背景色
 		setColor:function(value){
 			$boy.css('background-color',value);
-		}
+		},
+	    toShop:function(){
+	    	return walkToShop.apply(null,arguments);
+	    },
+	    outShop:function(){
+	    	return walkOutShop.apply(null,arguments);
+	    },
+	    getFlower:function(){
+	    	return getFlower();
+	    },
+	    getWidth:function(){
+	    	return $boy.width();
+	    },
+	    setFlowerWalk:function(){
+           $boy.addClass("slowFlolerWalk");
+	    },
+	    resetOriginal: function() {
+                this.stopWalk();
+                // 恢复图片
+                $boy.removeClass('slowFlolerWalk slowWalk').addClass('boyOriginal');
+         },
+         // 转身动作
+         rotate: function(callback) {
+           startWalk();
+           $boy.addClass('boy-rotate');
+           // 监听转身完毕
+           if (callback) {
+               $boy.on(animationEnd, function() {
+                   callback();
+                   $(this).off();
+               });
+           }
+       }
 	}
 }
