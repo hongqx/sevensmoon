@@ -63,134 +63,96 @@
             <li class="stars5"></li>
             <li class="stars6"></li>
           </ul>
+         
       </li>
 		</ul>
 		<div class="charector" id="boy"></div>
+    <!--飘花-->
+    <div id="snowflake"></div>
 		<div class="button">
 		   <button>开始</button>
 		   <button>暂停</button>
 	    </div>
 	</div>
 	<script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
-    <script type="text/javascript" src="http://img.mukewang.com/down/55ac9ea30001ace700000000.js"></script>
-    <script type="text/javascript" src="js/swipe.js"></script>
-	  <script type="text/javascript" src="js/qixi.js"></script>
-	  <script type="text/javascript">
+  <script type="text/javascript" src="http://img.mukewang.com/down/55ac9ea30001ace700000000.js"></script>
+  <script type="text/javascript" src="js/swipe.js"></script>
+  <script type="text/javascript" src="js/qixi.js"></script>
+  <script type="text/javascript">
 	     $(function(){
+             var boy = BoyWalk();
+             function startRun(){
+                  $("#sun").addClass("rotation");
+                  $(".cloud1").addClass("cloud1Anim");
+                  $(".cloud2").addClass("cloud2Anim");
+                  boy.walkTo(6000,0.6).then(function(){
 
-	     	    var container = $("#content");
-            var swipe = Swipe(container);
-            function scrollTo(time, proportionX){
-            	var distX = container.width() * proportionX;
-                swipe.scrollTo(distX, time);
-            }
-            swipe.scrollTo(container.width()*2,0);
+                      scrollTo(6500, 1);
+                      return boy.walkTo(6500,0.5);
 
-            var boy = BoyWalk();
+                  }).then(function(){
 
-            //飞鸟
-            var bird ={
-              elem:$(".bird"),
-              fly:function(){
-                this.elem.addClass("birdFly");
-                this.elem.transition({
-                  right:container.width()
-                },15000,'linear');
-              }
-            };
-            // 获取数据
-            var getValue = function(className) {
-                var $elem = $('' + className + '');
-                    // 走路的路线坐标
-                return {
-                    height: $elem.height(),
-                    top: $elem.position().top
-                };
-            };
-            //获取桥的Y轴
-            var bridgeY = function(){
-               var data = getValue(".c_background_middle");
-               return data.top;
-            }();
+                      boy.stopWalk();
 
-            var visualWidth = container.width();
-            /*小女孩的位置*/
-            var girl = {
-              elem:$(".girl"),
-              getHeight:function(){
-                return this.elem.height();
-              },
-              getWidth:function(){
-                return this.elem.width();
-              },
-              setOffset:function(){
-                this.elem.css({
-                  left:visualWidth/2,
-                  top:bridgeY - this.getHeight()
-                });
-              },
-              //转身动作
-              rotate:function(){
-                 this.elem.addClass("girl-rotate");
-              },
-              getOffset:function(){
-                 return this.elem.offset();
-              }
-            };
+                  }).then(function(){
 
-            //修正小女孩位置
-            girl.setOffset();
-            /*第三屏动画连接*/
-            boy.setFlowerWalk();
-            function startRun(){
-              boy.walkTo(2000,0.15)
-              .then(function(){
-                return boy.walkTo(1500,0.25,(bridgeY - girl.getHeight())/container.height());
-              }).then(function(){
-                  var proportionX = (girl.getOffset().left - boy.getWidth() + girl.getWidth() / 5) / container.width();
-                  return boy.walkTo(1500, proportionX);
-              }).then(function(){
-                 boy.resetOriginal();
-              }).then(function(){
-                //添加转身动作
-                setTimeout(function(){
-                  girl.rotate();
-                  boy.rotate();
-                },1000);
-              });
-            }
-            /*********第二屏动画流程**********************/
-            /*function startRun(){
-              boy.walkTo(2000,0.5)
-              .then(function(){
-                //暂停走路
-                boy.stopWalk();
-              })
-              .then(function(){
-                return openDoor();
-              })
-              .then(function(){
-                lamp.bright();
-              })
-              .then(function(){
-                //走进商店
-                return boy.toShop(2000);
-              })
-              .then(function(){
-                return boy.getFlower();
-              })
-              .then(function(){
-                bird.fly();
-              })
-              .then(function(){
-                 return boy.outShop(2000);
-              }).then(function(){
-                return  boy.walkTo(2000,1);
-              });
-            }*/
-    
-        
-        $("button:first").click(startRun);
+                      return openDoor();
+
+                  }).then(function(){
+
+                      lamp.bright();
+
+                  }).then(function(){
+                      //走进商店
+                      return boy.toShop(2000);
+
+                  }).then(function(){
+
+                      return boy.getFlower();
+
+                  }).then(function(){
+
+                      bird.fly();
+
+                  }).then(function(){
+
+                      return boy.outShop(2000);
+
+                  }).then(function(){
+                        
+                     return shutDoor();
+
+                  }).then(function(){
+                     lamp.dark();
+                  }).then(function(){
+                       
+                      girl.setOffset();
+                      scrollTo(6500,2);
+                      return  boy.walkTo(6500,0.15);
+
+                  }).then(function(){
+
+                      return boy.walkTo(1500,0.25,(bridgeY - girl.getHeight())/container.height());
+                  }).then(function(){
+                      var proportionX = (girl.getOffset().left - boy.getWidth() + girl.getWidth() / 5) / container.width();
+                      return boy.walkTo(1500, proportionX);
+                  }).then(function(){
+
+                      boy.resetOriginal();
+
+                  }).then(function(){
+                      //添加转身动作
+                      setTimeout(function(){
+                        girl.rotate();
+                        boy.rotate();
+                      },1000);
+                  }).then(function(){
+                     snowflake();
+                  });
+             }
+        $("button:first").click(function(){
+           startRun();
+        });
 	     });        
      </script>
      

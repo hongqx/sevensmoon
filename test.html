@@ -1,87 +1,160 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>慕课七夕主题</title>
+    <meta http-equiv="Content-type" content="text/html; charset=uft-8">
+    <title>七夕主题动画效果</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/pageA.css">
+  <link rel="stylesheet" type="text/css" href="css/pageB.css">
+  <link rel="stylesheet" type="text/css" href="css/pageC.css">
     <style type="text/css">
-        div {
-            background-color: yellow;
-            width: 200px;
-            height: 200px;
-            text-align: center;
-            border: 2px solid red;
-            margin: 3px;
-            font-size: 14px;
-        }
-        #block3,#block4{
-            background-color: #CAE1FF;
-        }
-        button {
-            font-size: 14px;
-        }
+
     </style>
-    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
 </head>
-
 <body>
-    <button>点击测试回调处理</button>
-    <button>点击测试$.Deferred处理</button>
-    </br>
-    </br>
-    <div id="block1">block1执行动画</div>
-    <div id="block2">block2执行动画</div>
-    <div id="block3">block3执行动画</div>
-    <div id="block4">block4执行动画</div>
+    <div id="content">
+        <ul class="content-wrap">
+            <li class="page">
+                <div class="a_background">
+                    <div class="a_background_top"></div>
+                    <div class="a_background_middle"></div>
+                    <div class="a_background_bottom"></div>
+                </div>
+                <div class="cloudArea">
+                    <div class="cloud cloud1"></div>
+                    <div class="cloud cloud2"></div>
+                </div>
+                <!-- 太阳 -->
+        <div id="sun"></div>
+            </li>
+            <li class="page">
+          <div class="b_background"></div> 
+          <div class="b_background_preload"></div>
+          <div class="shop">
+              <div class="door">
+                <div class="door-left"></div>
+                <div class="door-right"></div>
+                <div class="lamp"></div>
+              </div>
+           </div> 
+           <div class="bird"></div> 
+      </li>
+            <li class="page">
+        <div class="c_background">
+             <div class="c_background_top"></div>
+             <div class="c_background_middle"></div>
+             <div class="c_background_bottom"></div>
+        </div> 
+        <div class="girl"></div>
+        <div class="bridge-bottom">
+            <div class="water">
+              <div id="water1" class="water_1"></div>
+              <div id="water2" class="water_2"></div>
+              <div id="water3" class="water_3"></div>
+              <div id="water4" class="water_4"></div>
+            </div>
+          </div> 
+          <!--星星--> 
+          <ul class="stars">
+            <li class="stars1"></li>
+            <li class="stars2"></li>
+            <li class="stars3"></li>
+            <li class="stars4"></li>
+            <li class="stars5"></li>
+            <li class="stars6"></li>
+          </ul>
+         
+      </li>
+        </ul>
+        <div class="charector" id="boy"></div>
+    <!--飘花-->
+    <div id="snowflake"></div>
+        <div class="button">
+           <button>开始</button>
+           <button>暂停</button>
+        </div>
+    </div>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
+  <script type="text/javascript" src="http://img.mukewang.com/down/55ac9ea30001ace700000000.js"></script>
+  <script type="text/javascript" src="js/swipe.js"></script>
+  <script type="text/javascript" src="js/qixi.js"></script>
+  <script type="text/javascript">
+         $(function(){
+             var boy = BoyWalk();
+             function startRun(){
+                  $("#sun").addClass("rotation");
+                  $(".cloud1").addClass("cloud1Anim");
+                  $(".cloud2").addClass("cloud2Anim");
+                  boy.walkTo(6000,0.6).then(function(){
 
-    <script type="text/javascript">
-    // 回调处理
-    $('button:first').click(function() {
-        $("#block1").animate({
-            width: "50%"
-        }, 2000, function() {  // 嵌套回调
-            $("#block2").animate({
-                width: "50%"
-            }, 2000);
+                      scrollTo(6500, 1);
+                      return boy.walkTo(6500,0.5);
+
+                  }).then(function(){
+
+                      boy.stopWalk();
+
+                  }).then(function(){
+
+                      return openDoor();
+
+                  }).then(function(){
+
+                      lamp.bright();
+
+                  }).then(function(){
+                      //走进商店
+                      return boy.toShop(2000);
+
+                  }).then(function(){
+
+                      return boy.getFlower();
+
+                  }).then(function(){
+
+                      bird.fly();
+
+                  }).then(function(){
+
+                      return boy.outShop(2000);
+
+                  }).then(function(){
+                        
+                     return shutDoor();
+
+                  }).then(function(){
+                     lamp.dark();
+                  }).then(function(){
+                       
+                      girl.setOffset();
+                      scrollTo(6500,2);
+                      return  boy.walkTo(6500,0.15);
+
+                  }).then(function(){
+
+                      return boy.walkTo(1500,0.25,(bridgeY - girl.getHeight())/container.height());
+                  }).then(function(){
+                      var proportionX = (girl.getOffset().left - boy.getWidth() + girl.getWidth() / 5) / container.width();
+                      return boy.walkTo(1500, proportionX);
+                  }).then(function(){
+
+                      boy.resetOriginal();
+
+                  }).then(function(){
+                      //添加转身动作
+                      setTimeout(function(){
+                        girl.rotate();
+                        boy.rotate();
+                      },1000);
+                  }).then(function(){
+                     snowflake();
+                  });
+             }
+        $("button:first").click(function(){
+           startRun();
         });
-    });
-  
-    // jQuery的Deferred处理
-    $('button:last').click(function() {
-
-        function animate1() {
-            var dtd = $.Deferred(); // 生成Deferred对象
-            $("#block3").animate({
-                width: "50%"
-            }, 2000, function() {
-                dtd.resolve(); // 改变Deferred对象的执行状态
-            });
-            return dtd;
-        }
-
-        function animate2() {
-            var dtd = $.Deferred(); // 生成Deferred对象
-            $("#block4").animate({
-                width: "50%"
-            }, 2000, function() {
-                dtd.resolve(); // 改变Deferred对象的执行状态
-            });
-            return dtd;
-        }
-
-        var anim = animate1();
-
-        anim.then(function() {
-            $("#block3").text('block3动画动画直接结束');
-            return animate2();
-        }).then(function() {
-            $("#block4").text('block4动画动画直接结束');
-        });
-
-    });
-    
-
-    </script>
+         });        
+     </script>
+     
 </body>
-
 </html>
